@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+
+# Data
+data/*.json
+!data/settings.json
+uploads/*
+!uploads/.gitkeep
+
+# Logs
+logs/
+*.log

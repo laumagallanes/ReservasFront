@@ -1,0 +1,14 @@
+{
+  "title": "Latteame",
+  "logo": "/uploads/logo.png",
+  "contact": {
+    "phone": "+123456789",
+    "email": "hello@example.com",
+    "address": "123 Coffee Lane"
+  },
+  "social": {
+    "instagram": "https://instagram.com",
+    "facebook": "https://facebook.com"
+  },
+  "reservationUrl": "https://reservas.im-soluciones.com/"
+}
