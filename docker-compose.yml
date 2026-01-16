@@ -1,9 +1,10 @@
-
 services:
   server:
     build: ./server
-    ports:
-      - "3001:3000"
+    expose:
+      - "3000"
+    networks:
+      - backend
     environment:
       - RESERVATION_URL=https://reservas.im-soluciones.com/
       - DB_HOST=db
@@ -23,17 +24,36 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: admin_pass
       MYSQL_DATABASE: latteame
-    ports:
-      - "3309:3306"
+
+    networks:
+      - backend
     volumes:
       - db_data:/var/lib/mysql
 
   client:
-    build: ./client
-    ports:
-      - "88:80"
+    build:
+      context: ./client
+      args:
+        VITE_API_URL: /api
+    expose:
+      - "80"
     depends_on:
       - server
+    networks:
+      - backend
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARED_TOKEN}
+    depends_on:
+      - client
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
 
 volumes:
   db_data:
