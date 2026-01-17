@@ -122,8 +122,23 @@ app.post('/api/login', async (req, res) => {
 app.get('/api/settings', (req, res) => {
     const dataDir = path.join(__dirname, 'data');
     const settingsPath = path.join(dataDir, 'settings.json');
+    let settings = {};
+
     if (fs.existsSync(settingsPath)) {
-        res.json(JSON.parse(fs.readFileSync(settingsPath, 'utf8')));
+        try {
+            settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+        } catch (e) {
+            console.error('Error parsing settings.json', e);
+        }
+    }
+
+    // Inject env var if present
+    if (process.env.RESERVATION_URL) {
+        settings.reservationUrl = process.env.RESERVATION_URL;
+    }
+
+    if (Object.keys(settings).length > 0) {
+        res.json(settings);
     } else {
         res.status(404).json({ error: 'Settings not found' });
     }
