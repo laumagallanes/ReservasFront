@@ -6,7 +6,7 @@ services:
     networks:
       - backend
     environment:
-      - RESERVATION_URL=https://reservas.im-soluciones.com/
+      - RESERVATION_URL=${RESERVATION_URL}
       - DB_HOST=db
       - DB_USER=root
       - DB_PASSWORD=admin_pass
