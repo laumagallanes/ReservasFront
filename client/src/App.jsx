@@ -76,8 +76,11 @@ function App() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch each separately to be resilient
-                getSettings().then(setSettings).catch(e => console.error("Settings fail", e));
+                // Fetch settings first as it's critical for UI links
+                const settingsData = await getSettings();
+                setSettings(settingsData);
+
+                // Fetch other data in background
                 getProducts().then(setProducts).catch(e => console.error("Products fail", e));
                 getEvents().then(setEvents).catch(e => console.error("Events fail", e));
                 getReviews().then(setReviews).catch(e => console.error("Reviews fail", e));
@@ -85,8 +88,7 @@ function App() {
             } catch (error) {
                 console.error("Critical fetch error", error);
             } finally {
-                // Short delay to allow some data to arrive
-                setTimeout(() => setLoading(false), 500);
+                setLoading(false);
             }
         };
         fetchData();
