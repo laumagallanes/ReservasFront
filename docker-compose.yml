@@ -10,8 +10,10 @@ services:
     env_file:
       - .env
     volumes:
-      - ./server/data:/app/data
-      - ./server/uploads:/app/uploads
+      - server_data:/app/data
+      - server_uploads:/app/uploads
+    environment:
+      - DB_HOST=db
     depends_on:
       - db
     restart: unless-stopped
@@ -58,3 +60,5 @@ networks:
 
 volumes:
   db_data:
+  server_data:
+  server_uploads:
